@@ -15,7 +15,7 @@ index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR
 
 ---
 
-## Show every lookups used by each saved searches
+## Show every lookups used within each saved searches
 
 ```
 | rest /servicesNS/-/-/saved/searches
