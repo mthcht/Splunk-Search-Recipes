@@ -60,6 +60,7 @@ This search will display all the lookups name used within each saved searches ! 
 This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM, and highlights any that are missing.
 
 *`| where lookup_exists="Yes"` for the ones that does exist*
+
 *replace `hunting` with your own splunk app*
 
 
