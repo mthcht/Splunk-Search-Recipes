@@ -48,6 +48,7 @@ This search will display all the lookups name used within each saved searches ! 
 | mvexpand lookups
 | join type=left lookups 
     [| rest /servicesNS/-/-/data/lookup-table-files
+    | search eai:acl.app=hunting
     | table title
     | rename title as lookups
     | eval lookups=replace(lookups, "\.csv$", "")
@@ -57,7 +58,7 @@ This search will display all the lookups name used within each saved searches ! 
 | stats values(lookup_exists) as lookup_exists by saved_search, lookups
 | where lookup_exists="No"
 ```
-This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM, and highlights any that are missing.
+This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM within the same app, and highlights any that are missing.
 
 *`| where lookup_exists="Yes"` for the ones that does exist*
 
