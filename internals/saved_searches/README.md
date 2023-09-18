@@ -79,7 +79,7 @@ This search will display all the lookups name used within each saved searches ! 
 ```
 This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM within the same app, and highlights any lookups that are missing **both the csv lookup and the definition lookup.**
 
-*you can modify the condition `| where csv_lookup_exists="No" AND lookup_definition_exists="No"` to:
+You can modify the condition `| where csv_lookup_exists="No" AND lookup_definition_exists="No"` to:
 - `| search lookups="*.csv" AND csv_lookup_exists="Yes" AND lookup_definition_exists="No"` (lookup csv exist but definition lookup does not)
 - `| search lookups="*.csv" AND csv_lookup_exists="No" AND lookup_definition_exists="Yes"` (lookup csv does not exist but lookup definition exist)
 - `| where csv_lookup_exists="No" AND lookup_definition_exists="Yes"` (lookup csv does not exist (or is not included in the search could be normal if only the definition lookup is used, make sure the lookup csv exist) but lookup definition exist)
