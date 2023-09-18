@@ -53,6 +53,7 @@ This search will display all the lookups name used within each saved searches ! 
     | eval lookups=replace(lookups, "\.csv$", "")
     | eval lookup_exists="Yes"]
 | fillnull value="No" lookup_exists
+| where lookups!=""
 | stats values(lookup_exists) as lookup_exists by saved_search, lookups
 | where lookup_exists="No"
 ```
