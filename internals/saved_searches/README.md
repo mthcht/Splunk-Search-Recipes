@@ -15,4 +15,26 @@ index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR
 
 ---
 
-## 
+## Show every lookups used by each saved searches
+
+```
+| rest /servicesNS/-/-/saved/searches
+| search eai:acl.app=hunting
+| table title search
+| rename title as saved_search
+| rex field=search max_match=0 "(lookup\s+(?<lookups>[^\s]+))"
+| stats values(lookups) as lookups by saved_search
+```
+This search will display all the lookups name used within each saved searches ! (replace 'hunting' with your splunk application) 
+
+*search in all apps*
+```
+| rest /servicesNS/-/-/saved/searches
+| table title search
+| rename title as saved_search
+| rex field=search max_match=0 "(lookup\s+(?<lookups>[^\s]+))"
+| stats values(lookups) as lookups by saved_search
+```
+
+
+
