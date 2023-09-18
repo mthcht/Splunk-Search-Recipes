@@ -21,7 +21,9 @@ index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR
 index=_internal "Error in '*" sourcetype=scheduler
 | rex field=savedsearch_id "\;(?<splunk_app>.+?(?=\;))"
 | stats last(_raw) count by savedsearch_id splunk_app
+| where splunk_app="hunting"
 ```
+*searching in my hunting application, remove `| where splunk_app="hunting"` to search in all apps*
 
 ---
 
