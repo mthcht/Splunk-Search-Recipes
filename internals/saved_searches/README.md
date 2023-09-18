@@ -15,6 +15,16 @@ index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR
 
 ---
 
+## Find scheduled searches not working properly (other SPL errors)
+
+```sql
+index=_internal "Error in '*" sourcetype=scheduler
+| rex field=savedsearch_id "\;(?<splunk_app>.+?(?=\;))"
+| stats last(_raw) count by savedsearch_id splunk_app
+```
+
+---
+
 ## Show every lookups used within each saved searches
 
 ```sql
