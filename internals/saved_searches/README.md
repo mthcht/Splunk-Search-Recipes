@@ -40,7 +40,7 @@ This search will display all the lookups name used within each saved searches ! 
  
 ```sql
 | rest /servicesNS/-/-/saved/searches
-| search eai:acl.app=hunting
+| search eai:acl.app=soc
 | table title search
 | rename title as saved_search
 | rex field=search max_match=0 "(lookup\s+(?<lookups>.+?(?=(\s))))"
@@ -52,12 +52,18 @@ This search will display all the lookups name used within each saved searches ! 
     | table title
     | rename title as lookups
     | eval lookup_exists="Yes"]
-| fillnull value="No" lookup_exists
+| join type=left lookups 
+    [| rest /servicesNS/-/-/data/transforms/lookups 
+    | search eai:acl.app=hunting
+    | table title 
+    | rename title as lookups 
+    | eval lookup_definition_exists="Yes"]
+| fillnull value="No" lookup_exists lookup_definition_exists
 | where lookups!=""
-| stats values(lookup_exists) as lookup_exists by saved_search, lookups
-| where lookup_exists="No"
+| stats values(lookup_exists) as csv_lookup_exists values(lookup_definition_exists) as lookup_definition_exists by saved_search, lookups
+| where csv_lookup_exists="No" AND lookup_definition_exists="No"
 ```
-This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM within the same app, and highlights any that are missing.
+This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM within the same app, and highlights any lookups that are missing **both the csv lookup and the definition lookup.**
 
 *`| where lookup_exists="Yes"` for the ones that does exist*
 
