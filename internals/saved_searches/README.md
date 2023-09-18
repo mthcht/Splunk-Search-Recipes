@@ -43,7 +43,7 @@ This search will display all the lookups name used within each saved searches ! 
 | search eai:acl.app=hunting
 | table title search
 | rename title as saved_search
-| rex field=search max_match=0 "(lookup\s+(?<lookups>.+?(?=(\s|\||\.csv))))"
+| rex field=search max_match=0 "(lookup\s+(?<lookups>.+?(?=(\s))))"
 | stats values(lookups) as lookups by saved_search
 | mvexpand lookups
 | join type=left lookups 
@@ -51,7 +51,6 @@ This search will display all the lookups name used within each saved searches ! 
     | search eai:acl.app=hunting
     | table title
     | rename title as lookups
-    | eval lookups=replace(lookups, "\.csv$", "")
     | eval lookup_exists="Yes"]
 | fillnull value="No" lookup_exists
 | where lookups!=""
