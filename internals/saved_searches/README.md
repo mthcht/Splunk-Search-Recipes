@@ -36,5 +36,37 @@ This search will display all the lookups name used within each saved searches ! 
 | stats values(lookups) as lookups by saved_search
 ```
 
+## CSV Lookups Validation in saved Searches
+ 
+```
+| rest /servicesNS/-/-/saved/searches
+| search eai:acl.app=hunting
+| table title search
+| rename title as saved_search
+| rex field=search max_match=0 "(lookup\s+(?<lookups>.+?(?=(\s|\||\.csv))))"
+| stats values(lookups) as lookups by saved_search
+| mvexpand lookups
+| join type=left lookups 
+    [| rest /servicesNS/-/-/data/lookup-table-files
+    | table title
+    | rename title as lookups
+    | eval lookups=replace(lookups, "\.csv$", "")
+    | eval lookup_exists="Yes"]
+| fillnull value="No" lookup_exists
+| stats values(lookup_exists) as lookup_exists by saved_search, lookups
+| where lookup_exists="No"
+```
+This search scans saved searches in the 'hunting' app to identify utilized lookups, cross-references them with existing lookups on the SIEM, and highlights any that are missing.
+
+*`| where lookup_exists="Yes"` for the ones that does exist*
+*replace `hunting` with your own splunk app*
+
+
+
+
+
+
+
+
 
 
