@@ -36,6 +36,8 @@ This search will display all the lookups name used within each saved searches ! 
 | stats values(lookups) as lookups by saved_search
 ```
 
+---
+
 ## CSV Lookups Validation in saved Searches
  
 ```sql
