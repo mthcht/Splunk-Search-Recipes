@@ -1,7 +1,7 @@
 ## Find scheduled searches not working properly
 
 ```sql
-index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR  savedsearch_id="*;hunting;*"
+index=_internal sourcetype=scheduler Hunting_* status="failed" OR log_level=ERROR  savedsearch_id="*;hunting;*"
 | stats last(message) by savedsearch_id
 ```
 
@@ -9,7 +9,7 @@ Search for scheduled searches with errors filtering on the splunk application na
 
 *Searching in all apps*
 ```sql
-index=_internal sourcetype=scheduler SOC_* status="failed" OR log_level=ERROR
+index=_internal sourcetype=scheduler Hunting_* status="failed" OR log_level=ERROR
 | stats last(message) by savedsearch_id
 ```
 
