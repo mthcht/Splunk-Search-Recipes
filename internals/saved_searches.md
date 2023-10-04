@@ -1,5 +1,6 @@
 ## Find scheduled searches not working properly
 
+*replace `Hunting_*` by your search names pattern or remove it to see all results*
 ```sql
 index=_internal sourcetype=scheduler Hunting_* status="failed" OR log_level=ERROR  savedsearch_id="*;hunting;*"
 | stats last(message) by savedsearch_id
